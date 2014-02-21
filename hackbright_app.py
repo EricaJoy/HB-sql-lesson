@@ -20,7 +20,9 @@ CONN = None
 # These can probably be dictionaries. Investigate later.
 
 def get_student_by_github(github):
-    query = """SELECT first_name, last_name, github FROM Students WHERE github = ?"""
+    query = """SELECT first_name, last_name, github 
+               FROM Students
+               WHERE github = ?"""
     DB.execute(query, (github,))
     row = DB.fetchone()
     print """\
@@ -29,7 +31,10 @@ Github account: %s"""%(row[0], row[1], row[2])
 
 # Query for projects by title (handles multi-result responses...maybe)
 def project_by_title(title):
-    query = """SELECT DISTINCT title, description FROM Projects WHERE title = ? ORDER BY title"""
+    query = """SELECT DISTINCT title, description 
+               FROM Projects 
+               WHERE title = ? 
+               ORDER BY title"""
     result = DB.execute(query, (title,))
     print "Here are projects containing %s: \n"%(title)
     for i in result.fetchall(): 
@@ -40,14 +45,24 @@ def project_by_title(title):
         """%(i[0], i[1])
 
 # Query for a student's grade given a project
-def student_grade_by_project():
-    query = """ """
-    DB.execute(query, (args))
-    print """\
-    """
+def student_grade_by_project(first_name, last_name, project):
+    query = """SELECT ?, grade 
+               FROM Grades JOIN Students 
+               WHERE (Students.github = Grades.student_github)
+               AND Student.first_name = ?
+               AND Student.last_name = ?"""
+    result = DB.execute(query, (project, first_name, last_name))
+    print "Here are %s %s's grades for %s"%(first_name, last_name, project)
+    for i in result.fetchall():
+        print """\
+        Project Name: %s
+        Grade: %d
+        \n
+        """%(i[0], i[1])
 
 # Show all the grades for a student
-def show_all_student_grades():
+# TODO handle query by github case
+def show_all_student_grades(first_name, last_name):
     query = """ """
     DB.execute(query, (args))
     print """\
