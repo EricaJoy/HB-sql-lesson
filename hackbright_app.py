@@ -3,7 +3,7 @@ import sqlite3
 DB = None
 CONN = None
 
-### DB Query Functions ###
+### DB QUERY FUNCTIONS ###
 
 def get_student_by_github(github):
     query = """SELECT first_name, last_name, github FROM Students WHERE github = ?"""
@@ -13,13 +13,35 @@ def get_student_by_github(github):
 Student: %s %s
 Github account: %s"""%(row[0], row[1], row[2])
 
+# Add a student
 def make_new_student(first_name, last_name, github):
     query = """INSERT INTO Students VALUES (?, ?, ?)"""
     DB.execute(query, (first_name, last_name, github)) # Is there any situation where DB.execute doesn't take a tuple?
     CONN.commit()
     print "Successfully added student: %s %s"%(first_name, last_name)
 
+# Query for projects by title
+def project_by_title():
+    pass
 
+# Add a project
+def add_a_project():
+    pass
+
+# Query for a student's grade given a project
+def student_grade_by_project():
+    pass
+
+# Give a grade to a student
+def give_student_grade():
+    pass
+
+# Show all the grades for a student
+def show_all_student_grades():
+    pass
+
+
+### END DB QUERY FUNCTIONS ###
 
 ### Connect to the database ###
 def connect_to_db():
